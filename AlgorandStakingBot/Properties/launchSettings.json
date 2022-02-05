@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "AlgorandStakingBot": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
