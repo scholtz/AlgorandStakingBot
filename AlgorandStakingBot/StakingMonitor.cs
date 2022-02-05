@@ -46,6 +46,7 @@ namespace AlgorandStakingBot
                 var current = currentTime / configuration.Interval;
                 while (LastInterval >= current)
                 {
+                    Console.Write(".");
                     await Task.Delay(1000, cancellationToken);
                     currentTime = (ulong)DateTimeOffset.Now.ToUnixTimeSeconds();
                     current = currentTime / configuration.Interval;
@@ -91,16 +92,43 @@ namespace AlgorandStakingBot
                     }
                 }
 
-                var toSend = balances 
+                var toSend = balances
                                     .Where(a => !configuration.ExcludedAccounts.Contains(a.Address))
                                     .Where(a => !KnownLogicSigAccounts.Contains(a.Address));
                 var toSendAmount = toSend.Sum(a => (long)a.Amount);
                 var rewards = CalculateAccountReward(toSend);
                 var rewardsAmount = rewards.Sum(r => Convert.ToDecimal(r.Value));
-                var batch = PrepareBatch(rewards, algoParams);
-                logger.Info($"{DateTimeOffset.Now} ToSend: {rewards.Count()}, batch {batch.Count()} accountsBalance {toSendAmount} rewards {rewardsAmount}");
-                var sent = await AlgoExtensions.SubmitTransactions(algodClient, batch);
-                logger.Info($"{DateTimeOffset.Now} Sent: {sent.TxId}");
+                var keys = rewards.Keys.ToList();
+#if DEBUG
+                foreach (var r in rewards)
+                {
+                    logger.Info($"Reward:{r.Key}:{r.Value}");
+                }
+#endif
+                for (var page = 0; page <= keys.Count / 16; page++)
+                {
+                    var pageRewards = rewards.Skip(page * 16).Take(16);
+
+#if DEBUG
+                    foreach (var r in pageRewards)
+                    {
+                        logger.Info($"Page:{page}:{r.Key}:{r.Value}");
+                    }
+#endif
+
+                    var batch = PrepareBatch(pageRewards, algoParams);
+                    logger.Info($"{DateTimeOffset.Now} {page} ToSend: {rewards.Count()}, batch {batch.Count()} accountsBalance {toSendAmount} rewards {rewardsAmount}");
+                    var sent = await AlgoExtensions.SubmitTransactions(algodClient, batch);
+                    logger.Info($"{DateTimeOffset.Now} {page} Sent: {sent.TxId}");
+
+                }
+
+            }
+            catch (Algorand.V2.Algod.Model.ApiException<ErrorResponse> ex)
+            {
+                logger.Error(ex);
+                logger.Error(ex.Result.Message);
+                // If there is error we consider the account as logicsig
             }
             catch (Exception ex)
             {
@@ -123,7 +151,7 @@ namespace AlgorandStakingBot
             return balances;
         }
 
-        public IEnumerable<Algorand.SignedTransaction> PrepareBatch(Dictionary<string, ulong> rewards, TransactionParametersResponse algoParams)
+        public IEnumerable<Algorand.SignedTransaction> PrepareBatch(IEnumerable<KeyValuePair<string, ulong>> rewards, TransactionParametersResponse algoParams)
         {
 
             var ret = new List<Algorand.SignedTransaction>();
