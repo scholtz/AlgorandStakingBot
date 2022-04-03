@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgorandStakingBot", "AlgorandStakingBot\AlgorandStakingBot.csproj", "{CA3BB9B7-551F-45D9-8A96-81EE26B95BA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlgorandStakingBot", "AlgorandStakingBot\AlgorandStakingBot.csproj", "{CA3BB9B7-551F-45D9-8A96-81EE26B95BA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAlgorandStakingBot", "TestAlgorandStakingBot\TestAlgorandStakingBot.csproj", "{42CACE8C-0BBE-45FA-8C63-8638DF9C596B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestAlgorandStakingBot", "TestAlgorandStakingBot\TestAlgorandStakingBot.csproj", "{42CACE8C-0BBE-45FA-8C63-8638DF9C596B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-algorand-sdk", "dotnet-algorand-sdk\dotnet-algorand-sdk\dotnet-algorand-sdk.csproj", "{79D5E386-8E4B-477C-9AD6-168B9D09D96D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{42CACE8C-0BBE-45FA-8C63-8638DF9C596B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42CACE8C-0BBE-45FA-8C63-8638DF9C596B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42CACE8C-0BBE-45FA-8C63-8638DF9C596B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79D5E386-8E4B-477C-9AD6-168B9D09D96D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79D5E386-8E4B-477C-9AD6-168B9D09D96D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79D5E386-8E4B-477C-9AD6-168B9D09D96D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79D5E386-8E4B-477C-9AD6-168B9D09D96D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
