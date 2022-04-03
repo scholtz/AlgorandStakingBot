@@ -140,12 +140,12 @@ namespace AlgorandStakingBot
             string? next = null;
             var balances = new List<MiniAssetHolding>();
             await Task.Delay(indexerConfiguration.DelayMs, cancellationToken);
-            var balance = await lookupApi.BalancesAsync(include_all: false, limit: 100, next: next, round: round, currency_greater_than: configuration.MinimumBalanceForStaking, currency_less_than: null, asset_id: (int)configuration.AssetId, cancellationToken);
+            var balance = await lookupApi.BalancesAsync(include_all: false, limit: 100, next: next, round: null, currency_greater_than: configuration.MinimumBalanceForStaking, currency_less_than: null, asset_id: (int)configuration.AssetId, cancellationToken);
             balances.AddRange(balance.Balances);
             while (balance.Balances.Count > 0)
             {
                 await Task.Delay(indexerConfiguration.DelayMs, cancellationToken);
-                balance = await lookupApi.BalancesAsync(include_all: false, limit: 100, next: balance.NextToken, round: round, currency_greater_than: configuration.MinimumBalanceForStaking, currency_less_than: null, asset_id: (int)configuration.AssetId, cancellationToken);
+                balance = await lookupApi.BalancesAsync(include_all: false, limit: 100, next: balance.NextToken, round: null, currency_greater_than: configuration.MinimumBalanceForStaking, currency_less_than: null, asset_id: (int)configuration.AssetId, cancellationToken);
                 balances.AddRange(balance.Balances);
             }
             return balances;
