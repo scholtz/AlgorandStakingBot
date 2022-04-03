@@ -97,6 +97,7 @@ namespace AlgorandStakingBot
                                     .Where(a => !KnownLogicSigAccounts.Contains(a.Address));
                 var toSendAmount = toSend.Sum(a => (long)a.Amount);
                 var rewards = CalculateAccountReward(toSend);
+                rewards = rewards.OrderByDescending(k => k.Value).ToDictionary(k => k.Key, k => k.Value);
                 var rewardsAmount = rewards.Sum(r => Convert.ToDecimal(r.Value));
                 var keys = rewards.Keys.ToList();
 #if DEBUG
